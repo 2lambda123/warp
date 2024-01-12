@@ -136,9 +136,7 @@ export async function runStarknetDeploy(filePath: string, options: IDeployProps)
           ? `${classHashOption}`
           : `${classHashOption} --wallet ${options.wallet}`
       } ${inputs} ${options.account !== undefined ? `--account ${options.account}` : ''}`,
-      {
-        stdio: 'inherit',
-      },
+      { stdio: 'inherit' },
     );
   } catch {
     logError('starknet deploy failed');
@@ -250,9 +248,7 @@ function declareContract(filePath: string, options: IDeclareOptions): string | u
   try {
     const result = execSync(
       `${warpVenvPrefix} starknet declare --contract ${filePath} ${networkOption} ${walletOption} ${accountOption}`,
-      {
-        encoding: 'utf8',
-      },
+      { encoding: 'utf8' },
     );
     console.log(result);
     return processDeclareCLI(result, filePath);

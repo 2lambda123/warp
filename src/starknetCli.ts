@@ -149,7 +149,8 @@ export function runStarknetDeployAccount(options: IDeployAccountProps) {
     logError(
       `Error: AssertionError: --wallet must be specified with the "deploy_account" subcommand.`,
     );
-    return;
+    logError('Error: AssertionError: --wallet must be specified with the "deploy_account" subcommand.');
+return;
   }
   if (options.network == undefined) {
     logError(

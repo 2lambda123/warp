@@ -104,7 +104,14 @@ export async function runStarknetDeploy(filePath: string, options: IDeployProps)
   // such option does not exists currently when deploying, should be added
   let compileResult;
   try {
+    try {
     compileResult = await compileCairo(filePath, path.resolve(__dirname, '..'), options);
+  } catch (e) {
+    if (e instanceof CLIError) {
+      logError(e.message);
+    }
+    throw e;
+  }
   } catch (e) {
     if (e instanceof CLIError) {
       logError(e.message);

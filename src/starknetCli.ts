@@ -277,6 +277,7 @@ export function runStarknetDeclare(filePath: string, options: IDeclareOptions) {
   const { success, resultPath } = compileCairo(filePath, path.resolve(__dirname, '..'));
   if (!success) {
     logError(`Compilation of contract ${filePath} failed`);
+    logError('StarkNet declare failed');
     return;
   } else {
     assert(resultPath !== undefined);

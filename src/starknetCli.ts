@@ -231,7 +231,7 @@ export async function runStarknetCallOrInvoke(
       { stdio: 'inherit' },
     );
   } catch {
-    logError(`starknet ${callOrInvoke} failed`);
+    logError('Starknet call or invoke failed');
   }
 }
 

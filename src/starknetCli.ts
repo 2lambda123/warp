@@ -66,6 +66,11 @@ export function runStarknetCompile(filePath: string, debug_info: IOptionalDebugI
   const { success, resultPath } = compileCairo(filePath, path.resolve(__dirname, '..'), debug_info);
   if (!success) {
     logError(`Compilation of contract ${filePath} failed`);
+    logError(`Compilation of contract ${filePath} failed`);
+    return;
+  }
+  if (!success) {
+    logError(`Compilation of contract ${filePath} failed`);
     return;
   }
   console.log(`starknet-compile output written to ${resultPath}`);

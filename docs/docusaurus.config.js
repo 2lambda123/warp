@@ -16,9 +16,9 @@ const config = {
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  // organizationName: 'NethermindEth', // Usually your GitHub org/user name.
+  // organizationName: '2lambda123', // Usually your GitHub org/user name.
   // trailingSlash: false,
-  organizationName: 'NethermindEth',
+  organizationName: '2lambda123',
   projectName: 'warp',
   deploymentBranch: 'gh-pages',
 

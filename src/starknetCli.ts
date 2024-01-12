@@ -213,7 +213,7 @@ export async function runStarknetCallOrInvoke(
 
   try {
     execSync(
-      `${warpVenvPrefix} starknet ${callOrInvoke}  --address ${options.address} --abi ${abiPath} --function ${funcName} --network ${options.network} ${wallet} ${account} ${inputs}`,
+      `${warpVenvPrefix} starknet ${callOrInvoke}  --address ${options.address} --abi ${abiPath} --function ${funcName} --network ${options.network} ${wallet} ${account} ${inputs}`, { stdio: 'inherit' },
       { stdio: 'inherit' },
     );
   } catch {

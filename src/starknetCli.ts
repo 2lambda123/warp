@@ -52,6 +52,7 @@ export function compileCairo(
 
     return { success: true, resultPath, abiPath, classHash: undefined };
   } catch (e) {
+    logError(e.message);
     if (e instanceof Error) {
       logError('Compile failed');
       return { success: false, resultPath: undefined, abiPath: undefined, classHash: undefined };

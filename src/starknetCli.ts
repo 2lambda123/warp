@@ -41,6 +41,7 @@ export function compileCairo(
   const debug: string = debugInfo.debugInfo ? '--debug_info_with_source' : '--no_debug_info';
   try {
     console.log(`Running starknet compile with cairoPath ${cairoPath}`);
+    console.log(`Error: ${e.message}`);
     execSync(
       `${warpVenvPrefix} starknet-compile --disable_hint_validation ${debug} ${filePath} ${[
         ...parameters.entries(),

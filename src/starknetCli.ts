@@ -52,8 +52,8 @@ export function compileCairo(
 
     return { success: true, resultPath, abiPath, classHash: undefined };
   } catch (e) {
-    if (e instanceof Error) {
-      logError('Compile failed');
+    if (e instanceof Error || typeof e === 'string') {
+      logError('Compile failed: ' + e);
       return { success: false, resultPath: undefined, abiPath: undefined, classHash: undefined };
     } else {
       throw e;
@@ -64,14 +64,14 @@ export function compileCairo(
 export function runStarknetCompile(filePath: string, debug_info: IOptionalDebugInfo) {
   const { success, resultPath } = compileCairo(filePath, path.resolve(__dirname, '..'), debug_info);
   if (!success) {
-    logError(`Compilation of contract ${filePath} failed`);
+    logError(`Compilation of contract ${filePath} failed: ` + e);
     return;
   }
   console.log(`starknet-compile output written to ${resultPath}`);
 }
 
 export function runStarknetStatus(tx_hash: string, option: IOptionalNetwork) {
-  if (option.network == undefined) {
+  if (!option.network) {
     logError(
       `Error: Exception: feeder_gateway_url must be specified with the "status" subcommand.\nConsider passing --network or setting the STARKNET_NETWORK environment variable.`,
     );
@@ -168,7 +168,7 @@ return;
         stdio: 'inherit',
       },
     );
-  } catch {
+  } catch (e) {
     logError('starknet deploy failed');
   }
 }
@@ -192,7 +192,7 @@ export async function runStarknetCallOrInvoke(
 
   const { success, abiPath } = compileCairo(filePath, path.resolve(__dirname, '..'));
   if (!success) {
-    logError(`Compilation of contract ${filePath} failed`);
+    logError(`Compilation of contract ${filePath} failed: ` + e);
     return;
   }
 
@@ -255,7 +255,7 @@ function declareContract(filePath: string, options: IDeclareOptions): string | u
     );
     console.log(result);
     return processDeclareCLI(result, filePath);
-  } catch {
+  } catch (e) {
     logError('StarkNet declare failed');
   }
 }
@@ -263,7 +263,7 @@ function declareContract(filePath: string, options: IDeclareOptions): string | u
 export function runStarknetDeclare(filePath: string, options: IDeclareOptions) {
   const { success, resultPath } = compileCairo(filePath, path.resolve(__dirname, '..'));
   if (!success) {
-    logError(`Compilation of contract ${filePath} failed`);
+    logError(`Compilation of contract ${filePath} failed: ` + e);
     return;
   } else {
     assert(resultPath !== undefined);

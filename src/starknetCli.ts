@@ -52,6 +52,7 @@ export function compileCairo(
 
     return { success: true, resultPath, abiPath, classHash: undefined };
   } catch (e) {
+    logError(e.message);
     if (e instanceof Error) {
       logError('Compile failed');
       return { success: false, resultPath: undefined, abiPath: undefined, classHash: undefined };
@@ -63,6 +64,11 @@ export function compileCairo(
 
 export function runStarknetCompile(filePath: string, debug_info: IOptionalDebugInfo) {
   const { success, resultPath } = compileCairo(filePath, path.resolve(__dirname, '..'), debug_info);
+  if (!success) {
+    logError(`Compilation of contract ${filePath} failed`);
+    logError(`Compilation of contract ${filePath} failed`);
+    return;
+  }
   if (!success) {
     logError(`Compilation of contract ${filePath} failed`);
     return;
@@ -98,7 +104,14 @@ export async function runStarknetDeploy(filePath: string, options: IDeployProps)
   // such option does not exists currently when deploying, should be added
   let compileResult;
   try {
+    try {
     compileResult = await compileCairo(filePath, path.resolve(__dirname, '..'), options);
+  } catch (e) {
+    if (e instanceof CLIError) {
+      logError(e.message);
+    }
+    throw e;
+  }
   } catch (e) {
     if (e instanceof CLIError) {
       logError(e.message);
@@ -218,7 +231,7 @@ export async function runStarknetCallOrInvoke(
       { stdio: 'inherit' },
     );
   } catch {
-    logError(`starknet ${callOrInvoke} failed`);
+    logError('Starknet call or invoke failed');
   }
 }
 
@@ -264,6 +277,7 @@ export function runStarknetDeclare(filePath: string, options: IDeclareOptions) {
   const { success, resultPath } = compileCairo(filePath, path.resolve(__dirname, '..'));
   if (!success) {
     logError(`Compilation of contract ${filePath} failed`);
+    logError('StarkNet declare failed');
     return;
   } else {
     assert(resultPath !== undefined);

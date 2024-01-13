@@ -4,6 +4,8 @@ import { error } from './formatting';
 import { getSourceFromLocations } from './utils';
 
 export function logError(message: string): void {
+  // Call the desired logging mechanism here
+  console.log(message);
   console.error(error(message));
 }
 

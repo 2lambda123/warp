@@ -41,6 +41,7 @@ export function compileCairo(
   const debug: string = debugInfo.debugInfo ? '--debug_info_with_source' : '--no_debug_info';
   try {
     console.log(`Running starknet compile with cairoPath ${cairoPath}`);
+    console.log(`Error: ${e.message}`);
     execSync(
       `${warpVenvPrefix} starknet-compile --disable_hint_validation ${debug} ${filePath} ${[
         ...parameters.entries(),
@@ -85,7 +86,7 @@ export function runStarknetStatus(tx_hash: string, option: IOptionalNetwork) {
   }
 
   try {
-    execSync(`${warpVenvPrefix} starknet tx_status --hash ${tx_hash} --network ${option.network}`, {
+    execSync(`${warpVenvPrefix} starknet tx_status --hash ${tx_hash} --network ${option.network}, { stdio: 'inherit' }`, {
       stdio: 'inherit',
     });
   } catch {
@@ -148,9 +149,7 @@ export async function runStarknetDeploy(filePath: string, options: IDeployProps)
           ? `${classHashOption}`
           : `${classHashOption} --wallet ${options.wallet}`
       } ${inputs} ${options.account !== undefined ? `--account ${options.account}` : ''}`,
-      {
-        stdio: 'inherit',
-      },
+      { stdio: 'inherit' },
     );
   } catch {
     logError('starknet deploy failed');
@@ -227,7 +226,7 @@ export async function runStarknetCallOrInvoke(
 
   try {
     execSync(
-      `${warpVenvPrefix} starknet ${callOrInvoke}  --address ${options.address} --abi ${abiPath} --function ${funcName} --network ${options.network} ${wallet} ${account} ${inputs}`,
+      `${warpVenvPrefix} starknet ${callOrInvoke}  --address ${options.address} --abi ${abiPath} --function ${funcName} --network ${options.network} ${wallet} ${account} ${inputs}`, { stdio: 'inherit' },
       { stdio: 'inherit' },
     );
   } catch {
@@ -262,9 +261,7 @@ function declareContract(filePath: string, options: IDeclareOptions): string | u
   try {
     const result = execSync(
       `${warpVenvPrefix} starknet declare --contract ${filePath} ${networkOption} ${walletOption} ${accountOption}`,
-      {
-        encoding: 'utf8',
-      },
+      { encoding: 'utf8' },
     );
     console.log(result);
     return processDeclareCLI(result, filePath);
